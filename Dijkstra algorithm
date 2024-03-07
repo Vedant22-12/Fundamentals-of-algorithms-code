@@ -1,0 +1,45 @@
+import sys
+
+nodes = [
+    [0, 0, 1, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0, 1, 0],
+    [1, 1, 0, 1, 1, 0, 0],
+    [1, 0, 1, 0, 0, 0, 1],
+    [0, 0, 1, 0, 0, 1, 0],
+    [0, 1, 0, 0, 1, 0, 1],
+    [0, 0, 0, 1, 0, 1, 0]
+]
+
+edges = [
+    [0, 0, 1, 0, 2, 0, 0],
+    [0, 0, 2, 0, 0, 3, 0],
+    [1, 2, 0, 1, 3, 0, 0],
+    [2, 0, 1, 0, 0, 0, 1],
+    [0, 0, 3, 0, 0, 2, 0],
+    [0, 3, 0, 0, 2, 0, 1],
+    [0, 0, 0, 1, 0, 1, 0]
+]
+
+def toBeVisited():
+    global visitedAndDistance
+    v = -10
+    for index in range(numberOfNodes):
+        if visitedAndDistance[index][0] == 0 and (v < 0 or visitedAndDistance[index][1] <= visitedAndDistance[v][1]):
+            v = index
+    return v
+
+numberOfNodes = len(nodes[0])
+visitedAndDistance = [[0, 0] for _ in range(numberOfNodes)]
+for node in range(numberOfNodes):
+    toVisit = toBeVisited()
+    for neighborIndex in range(numberOfNodes):
+        if nodes[toVisit][neighborIndex] == 1 and visitedAndDistance[neighborIndex][0] == 0:
+            newDistance = visitedAndDistance[toVisit][1] + edges[toVisit][neighborIndex]
+            if visitedAndDistance[neighborIndex][1] > newDistance:
+                visitedAndDistance[neighborIndex][1] = newDistance
+            visitedAndDistance[toVisit][0] = 1
+
+i = 0
+for distance in visitedAndDistance:
+    print("Distance of", chr(ord('A') + i), "from source node:", distance[1])
+    i += 1
