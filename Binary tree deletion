@@ -1,0 +1,70 @@
+class TreeNode:
+    def __init__(self, data):
+        self.key = data
+        self.left = None
+        self.right = None
+
+def inorder(root):
+    if root:
+        inorder(root.left)
+        print(root.key, end=" ")
+        inorder(root.right)
+
+def delete_deepest(root, d_node):
+    q = [root]
+    while q:
+        temp = q.pop(0)
+        if temp is d_node:
+            temp = None
+            return
+        if temp.right:
+            if temp.right is d_node:
+                temp.right = None
+                return
+            else:
+                q.append(temp.right)
+        if temp.left:
+            if temp.left is d_node:
+                temp.left = None
+                return
+            else:
+                q.append(temp.left)
+
+def deletion(root, key):
+    if root is None:
+        return None
+    if root.left is None and root.right is None:
+        if root.key == key:
+            return None
+        else:
+            return root
+    key_node = None
+    q = [root]
+    while q:
+        temp = q.pop(0)
+        if temp.key == key:
+            key_node = temp
+        if temp.left:
+            q.append(temp.left)
+        if temp.right:
+            q.append(temp.right)
+    if key_node:
+        x = temp.key
+        delete_deepest(root, temp)
+        key_node.key = x
+    return root
+
+if __name__ == '__main__':
+    root = TreeNode(10)
+    root.left = TreeNode(11)
+    root.left.left = TreeNode(7)
+    root.left.right = TreeNode(12)
+    root.right = TreeNode(9)
+    root.right.left = TreeNode(15)
+    root.right.right = TreeNode(8)
+    print("Before deletion:", end=" ")
+    inorder(root)
+    key = 11
+    root = deletion(root, key)
+    print("\nAfter deletion:", end=" ")
+    inorder(root)
