@@ -1,0 +1,14 @@
+def getMinMax(low, high, arr):
+    if low == high:
+        return arr[low], arr[low]
+    elif high == low + 1:
+        return (arr[low], arr[high]) if arr[low] < arr[high] else (arr[high], arr[low])
+    mid = (low + high) // 2
+    arr_max1, arr_min1 = getMinMax(low, mid, arr)
+    arr_max2, arr_min2 = getMinMax(mid + 1, high, arr)
+    return max(arr_max1, arr_max2), min(arr_min1, arr_min2)
+
+arr = [1000, 11, 445, 1, 330, 3000]
+arr_max, arr_min = getMinMax(0, len(arr) - 1, arr)
+print('Minimum element is', arr_min)
+print('Maximum element is', arr_max)
